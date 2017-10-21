@@ -1,11 +1,11 @@
 var startButton = document.getElementById("startButton");
 
 startButton.addEventListener("click", function startGame() {
-	var userHealth = 40;
+	var userHealth = 20;
 	var grantHealth = 10;
 	var userWins = 0;
 	var grantWins = 0;
-	var scoreToWin = 4;
+	var scoreToWin = 3;
 	var grantName = "Grant";
 	var keepPlaying;
 
@@ -19,36 +19,37 @@ startButton.addEventListener("click", function startGame() {
 	function startCombat() {
 		do { // do...while... loop initializes and plays through each match
 			while (userHealth > 0 && grantHealth > 0) { // as long as they are alive... deal damage.
-				
-				// https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm
-
-				// prompt user to keep playing... ATTACK/QUIT
-				damage(); // attack... click ok to continue the battle/loop
-				// quit... click cancel to retreat call exitCombat();	
+				let attack = window.confirm(userName + " has " + userHealth + " health\n" + grantName + " has " + grantHealth  + " health\n" + "Click OK to attack or Cancel to retreat."); // prompt user to keep playing... ATTACK/QUIT
+				if (attack === true) { 
+					damage();
+				} else {
+					exitCombat();
+				}	
 			}	
-
-			////////////// MAKE THIS INTO A FUNCTION MATCH WON
-			// check health to see if there is a winner
-			if (userHealth <= 0) {
-				grantWinsMatch(); //add arguments to determine winner
+			if (userHealth <= 0) { // check health to see if there is a winner
+				matchIsWon(grantName);
 			} else if (grantHealth <= 0){
-				userWinsMatch();
+				matchIsWon(userName);
 			} // end check health, end of each match
 			
-			keepPlaying = (userWins < scoreToWin) && (grantWins < scoreToWin);
-			
+			keepPlaying = (userWins < scoreToWin) && (grantWins < scoreToWin);			
 			heal(userName, 5);
 			heal(grantName, 10);
 
 		} while (keepPlaying); //end of game do...while...
-		checkIfGameWon();
+
+		if (userWins >= scoreToWin) {
+			gameIsWon(userName);
+		} else if (grantWins >= scoreToWin) {
+			gameIsWon(grantName);
+		}
 	} // end of combat loop
 
 	function damage() {		
 		userHealth -= getDamage(1,5);
 		grantHealth -= getDamage(1,5);
-		console.log(userName + " has " + userHealth + " health left");
-		console.log(grantName + " has " + grantHealth  + " health left");
+		console.log(userName + " has " + userHealth + " health");
+		console.log(grantName + " has " + grantHealth  + " health");
 	}
 
 	function getDamage(min, max) {
@@ -65,39 +66,31 @@ startButton.addEventListener("click", function startGame() {
 		}
 	}
 
+	function matchIsWon(player) {
+		if (player === userName) {
+			userWins += 1;
+			console.log(userName + " wins the match! The score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
+			alert(userName + " wins the match!\nThe score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
+		} else if (player === grantName) {
+			grantWins += 1;
+			console.log(grantName + " wins the match! The score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
+			alert(grantName + " wins the match!\nThe score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
+		}
+	}
+
+	function gameIsWon(player) {
+		if (player === userName) {
+			console.log(userName + " WINS THE GAME!");
+			alert(userName + " WINS THE GAME!");
+		} else if (player === grantName) {
+			console.log(grantName + " WINS THE GAME!");
+			alert(grantName + " WINS THE GAME!");
+		}
+	}
+
 	function exitCombat() {
 		keepPlaying = false;
-		console.log("game's over......");
+		break;
 	}
-
-// refactor these 
-function grantWinsMatch() {
-	grantWins += 1;
-	console.log(grantName + " wins the match! The score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
-	alert(grantName + " wins the match!");
-}
-function userWinsMatch() {
-	userWins += 1;
-	console.log(userName + " wins the match! The score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
-	alert(userName + " wins the match!");
-}
-
-function userWinsGame() {
-	console.log(userName + " WINS THE GAME!");
-	alert(userName + " WINS THE GAME!");
-}
-function grantWinsGame() {
-	console.log(grantName + " WINS THE GAME!");
-	alert(grantName + " WINS THE GAME!");
-}
-
-
-function checkIfGameWon() {
-	if (userWins === scoreToWin) {
-		userWinsGame();
-	} else if (grantWins === scoreToWin) {
-		grantWinsGame();
-	}
-}
 
 }); // thanks for playing!

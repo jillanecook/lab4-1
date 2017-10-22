@@ -35,20 +35,25 @@ startButton.addEventListener("click", function startGame() {
 			} else if (grantHealth <= 0){
 				matchIsWon(userName);
 			} // end check health, end of each match
-			
-			keepPlaying = (userWins < scoreToWin) && (grantWins < scoreToWin);			
+            
+        
+			keepPlaying = (userWins < scoreToWin) && (grantWins < scoreToWin);	
+            
 			heal(userName, 5);
 			heal(grantName, 10);
-
-		} while (keepPlaying); //end of game do...while...
-
-		if (userWins >= scoreToWin) {
-			gameIsWon(userName);
-		} else if (grantWins >= scoreToWin) {
-			gameIsWon(grantName);
             
-		}
-	} exitCombat();
+            if (userWins === scoreToWin) {
+			gameIsWon(userName);
+		  } else if (grantWins === scoreToWin) {
+			gameIsWon(grantName);//end of game do...while...
+        }
+            
+
+		} while (keepPlaying); 
+        
+        
+    }  exitCombat();
+
 
 	function damage() {		
 		userHealth -= getDamage(1,5);
@@ -85,7 +90,7 @@ startButton.addEventListener("click", function startGame() {
 	}
 
 	function gameIsWon(player) {
-		if (player === userName) {
+		if ((player === userName) &&  (userWins === scoreToWin)) {
 			console.log(userName + " WINS THE GAME!");
 			alert(userName + " WINS THE GAME!");
             let playAgain= window.confirm("Would you like to continue battling?" + "Click OK to attack or Cancel to retreat.");
@@ -94,29 +99,22 @@ startButton.addEventListener("click", function startGame() {
 				} else {
 					exitCombat();
 				}
-        
-		} else if (player === grantName) {
+		} else if ((player === grantName) && (grantWins === scoreToWin)) {
 			console.log(grantName + " WINS THE GAME!");
 			alert(grantName + " WINS THE GAME!");
             let playAgain= window.confirm("Would you like to continue battling?" + "Click OK to attack or Cancel to retreat.");
-            if (playAgain === true) { 
-                    (userHealth === 20);
-                    (grantHealth === 10);
-					startCombat();
-				} else {
-					exitCombat();
+            if (playAgain === true) {
+                    startCombat();
+            } else {
+				    exitCombat();
 				}
-        
-		}
-        
-	}
+		  }  
+	   }
 
 	function exitCombat() {
 		keepPlaying = false;	
 	}
     
     
-
-
 
 }); // thanks for playing!

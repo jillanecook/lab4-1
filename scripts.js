@@ -1,14 +1,18 @@
+  
+
 var startButton = document.getElementById("startButton");
 
 startButton.addEventListener("click", function startGame() {
-	var userHealth = 20;
+    
+    var userHealth = 20;
 	var grantHealth = 10;
 	var userWins = 0;
 	var grantWins = 0;
 	var scoreToWin = 3;
 	var grantName = "Grant";
 	var keepPlaying;
-
+    
+	
 	var userName = prompt("Please enter your name."); // prompt for user name
 	if (userName) { // check to see if user name was entered
 		startCombat();
@@ -17,10 +21,10 @@ startButton.addEventListener("click", function startGame() {
 	}
 
 	function startCombat() {
-		do { // do...while... loop initializes and plays through each match
-			while (userHealth > 0 && grantHealth > 0) { // as long as they are alive... deal damage.
+		do { // do...while... loop initializes and plays through each match       
+                while (userHealth > 0 && grantHealth > 0) { // as long as they are alive... deal damage.
 				let attack = window.confirm(userName + " has " + userHealth + " health\n" + grantName + " has " + grantHealth  + " health\n" + "Click OK to attack or Cancel to retreat."); // prompt user to keep playing... ATTACK/QUIT
-				if (attack === true) { 
+				if (attack === true) {
 					damage();
 				} else {
 					exitCombat();
@@ -42,8 +46,9 @@ startButton.addEventListener("click", function startGame() {
 			gameIsWon(userName);
 		} else if (grantWins >= scoreToWin) {
 			gameIsWon(grantName);
+            
 		}
-	} // end of combat loop
+	} exitCombat();
 
 	function damage() {		
 		userHealth -= getDamage(1,5);
@@ -71,6 +76,7 @@ startButton.addEventListener("click", function startGame() {
 			userWins += 1;
 			console.log(userName + " wins the match! The score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
 			alert(userName + " wins the match!\nThe score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
+            
 		} else if (player === grantName) {
 			grantWins += 1;
 			console.log(grantName + " wins the match! The score is: " + userName + " " + userWins + " | " + grantName + " " + grantWins);
@@ -82,15 +88,35 @@ startButton.addEventListener("click", function startGame() {
 		if (player === userName) {
 			console.log(userName + " WINS THE GAME!");
 			alert(userName + " WINS THE GAME!");
+            let playAgain= window.confirm("Would you like to continue battling?" + "Click OK to attack or Cancel to retreat.");
+            if (playAgain === true) {
+					startCombat();
+				} else {
+					exitCombat();
+				}
+        
 		} else if (player === grantName) {
 			console.log(grantName + " WINS THE GAME!");
 			alert(grantName + " WINS THE GAME!");
+            let playAgain= window.confirm("Would you like to continue battling?" + "Click OK to attack or Cancel to retreat.");
+            if (playAgain === true) { 
+                    (userHealth === 20);
+                    (grantHealth === 10);
+					startCombat();
+				} else {
+					exitCombat();
+				}
+        
 		}
+        
 	}
 
 	function exitCombat() {
-		keepPlaying = false;
-		break;
+		keepPlaying = false;	
 	}
+    
+    
+
+
 
 }); // thanks for playing!
